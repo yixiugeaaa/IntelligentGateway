@@ -2,7 +2,7 @@ package cn.qaii.intelligentgateway.common.http.parser;
 
 import java.util.List;
 
-import cn.qaii.intelligentgateway.frame.json.JSONConvertor;
+import cn.qaii.intelligentgateway.frame.util.JsonUtil;
 import cn.qaii.intelligentgateway.model.LiveInfo;
 
 /**
@@ -18,7 +18,7 @@ public class LiveParser {
 	 * @return
 	 */
 	public static List<LiveInfo> parseLiveInfoList(String data){
-		List<LiveInfo> infos = JSONConvertor.convert(LiveInfo.class, data);
+		List<LiveInfo> infos = JsonUtil.getList(data,LiveInfo.class);
 		return infos;
 	}
 

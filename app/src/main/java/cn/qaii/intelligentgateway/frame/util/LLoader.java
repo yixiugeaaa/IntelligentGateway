@@ -5,7 +5,6 @@ import android.content.Context;
 import cn.qaii.intelligentgateway.frame.constant.LContext;
 import cn.qaii.intelligentgateway.frame.database.LDaoManager;
 import cn.qaii.intelligentgateway.frame.http.HttpExecutor;
-import cn.qaii.intelligentgateway.frame.json.JSONConvertor;
 
 
 /**
@@ -25,7 +24,6 @@ public class LLoader {
 		LContext.init(context);
 		LDaoManager.init(context);
 		HttpExecutor.init();
-		JSONConvertor.init(context);
 		LLogger.e("数据初始化完毕");
 	}
 }
