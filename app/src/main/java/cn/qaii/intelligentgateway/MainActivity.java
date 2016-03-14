@@ -1,4 +1,4 @@
-package cn.qaii.intelligentgateway.activity;
+package cn.qaii.intelligentgateway;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import cn.qaii.intelligentgateway.R;
 import cn.qaii.intelligentgateway.common.dao.LiveDao;
 import cn.qaii.intelligentgateway.common.http.LiveRequest;
 import cn.qaii.intelligentgateway.model.LiveInfo;

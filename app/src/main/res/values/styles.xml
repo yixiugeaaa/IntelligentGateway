@@ -1,5 +1,23 @@
 <resources>
 
-    <style name="AppTheme" parent="android:Theme.Light" />
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="parent_theme">
+
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:actionMenuTextAppearance">@style/MenuTextStyle</item>
+    </style>
+
+    <style name="SplashTheme" parent="parent_theme">
+
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:actionMenuTextAppearance">@style/MenuTextStyle</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="MenuTextStyle">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 
 </resources>
