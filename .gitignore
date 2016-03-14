@@ -5,3 +5,5 @@
 .DS_Store
 /build
 /captures
+/viewutil_lib/src/test/java/cn/qaii/viewutil_lib/ExampleUnitTest.java
+/actionbarsherlock/test/com/actionbarsherlock/internal/ResourcesCompatTest.java
