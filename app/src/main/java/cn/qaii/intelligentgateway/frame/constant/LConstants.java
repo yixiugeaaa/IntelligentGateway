@@ -7,7 +7,7 @@ import android.os.Environment;
 public class LConstants {
 
 	// =========================本地相关============================
-	public static final String APP_TAG = "cx_investor"; // 项目关键�?
+	public static final String APP_TAG = "cx_investor"; // 项目关键
 	public static final String APP_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + APP_TAG + File.separator; // 项目路径
 	static final String APP_PATH_TEST = APP_TAG + File.separator; // 项目路径
 	public static final String LOG_PATH = APP_PATH + "log" + File.separator + "cx_investor.log"; // 日志文件路径
