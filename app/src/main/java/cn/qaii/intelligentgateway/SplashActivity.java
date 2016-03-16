@@ -94,7 +94,7 @@ public class SplashActivity extends BaseSplashActivity {
 				startActivity(new Intent(mContext, MainActivity.class));
 				finish();
 			}
-		}, 3000);
+		}, 1000);
 	}
 
 	@Override

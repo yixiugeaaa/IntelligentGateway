@@ -107,6 +107,7 @@ public class BaseActivity extends SherlockFragmentActivity{
 				
 				@Override
 				public void onClick(View v) {
+
 				}
 			});
 			
