@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="base_color">#ff4649</color>
+    <color name="base_color_deep">#ff2d00</color>
+    <color name="actionbar_color">#ff4649</color>
+    <!-- 
+    <color name="actionbar_color">#00cdff</color>
+     -->
+    <color name="tv_key">#353535</color>
+    <color name="tv_text">#666666</color>
+    
+    <!-- 上拉加载，下拉刷新 -->
+    <color name="pull_refresh_textview">#000000</color>
+    <color name="gold">#000000</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+    
+    <color name="btn_gray_light">#CCCCCC</color>
+    <color name="white">#FFFFFF</color>
+    
+    <color name="transparent_25">#3f000000</color>
+
+</resources>

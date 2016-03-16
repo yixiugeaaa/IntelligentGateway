@@ -1,0 +1,32 @@
+数据加载功能：
+包名 com.android.lib.swipe 存放的是下拉刷新和上拉加载的代码
+使用时 实现OnRefreshListener,OnLoadListener这两个接口即可  
+在方法onLoad()写入加载时的动作  onRefresh()写入下拉刷新的动作  
+使用setCanload()，setCanRefresh()设置此控件是否使用上拉加载和下拉刷新
+
+数据加载动画:
+同步界面的刷新动画直接在布局文件中就可以使用
+layout="@layout/layout_refresh"加入即可
+然后分别在刷新时设置View.VISIBLE即可，刷新结束时关闭
+
+右滑关闭动画：
+com.android.lib.swipe.back 放置了右滑关闭的代码
+使用时直接将需要此功能的activity继承SwipeBackActivity即可
+注意此代码在结合Viewpage时候有可能出现bug(viewpage右滑还有页面直接退出，或者右滑结束再次开启此程序又跳转到viewpage界面)
+目测问题出在对于当前事件所处view的获取  代码169行  getHitRect 使用有问题 
+
+含有photoview的包实现了图片查看器的功能   
+1.使用时要在使用的activity中初始化imageload 
+例"LImageLoader.initConfig(getApplicationContext()); "
+2.实现一个开启图片查看器的函数
+例如：protected void openImageReview(Context context, int position,ArrayList<String> list) {
+		Intent intent = new Intent(context, ImagePagerActivity.class);
+		intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, list);
+		intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, position);
+		mContext.startActivity(intent);
+其中list存放的是网络图片的网址，position放入的开启界面显示的第一个图片在list中的位置
+3.AndroidManifest.xml中
+添加<activity android:name="com.android.lib.photoview.ImagePagerActivity"></activity>
+增加网络访问权限
+
+

@@ -1,0 +1,42 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="root_theme" parent="Theme.Sherlock.Light">
+        <item name="android:actionBarDivider">@null</item>
+        <item name="android:actionBarTabStyle">@style/MyActionBarTabStyle</item>
+        <item name="android:actionBarTabBarStyle">@style/MyActionBarTabBarStyle</item>
+        <item name="android:actionBarTabTextStyle">@style/MyActionBarTabTextStyle</item>
+    </style>
+    
+    <style name="parent_theme" parent="root_theme"/>
+    
+    <!-- Tab选项标签的样式 -->
+    <style name="MyActionBarTabStyle" parent="Widget.Sherlock.Light.ActionBar.TabView">
+        <item name="android:background">@drawable/tab_view_indicator</item>
+    </style>
+    <!-- TabBar选项标签的样式 -->
+    <style name="MyActionBarTabBarStyle" parent="Widget.Sherlock.Light.ActionBar.TabBar">
+    </style>
+
+    <!-- Tab选项标签字体的样式 -->
+    <style name="MyActionBarTabTextStyle" parent="Widget.Sherlock.Light.ActionBar.TabText">        
+        <item name="android:textColor">@color/tab_text_color_selector</item>
+        <item name="android:textSize">12sp</item>   
+    </style>
+
+     <style name="dialog_style" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="picture_dialog_style" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/picture_show</item>
+        <!-- 指定显示的动画xml -->
+        <item name="android:windowExitAnimation">@anim/picture_dismiss</item>
+        <!-- 指定消失的动画xml -->
+    </style>
+
+</resources>

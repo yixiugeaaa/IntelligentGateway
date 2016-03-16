@@ -1,0 +1,37 @@
+命名规范(以客户管理为例)  名字过长的取适当字母简写(英文)
+1:activity,名字不可过长，用英文命名，比如客户管理列表CustomerListActivity
+2:类内变量名
+                    全局变量名,mCustomerName
+                    局部变量名,customerName
+                   控件变量名,TextView tvCustomerName;
+                Button btnCustomerName;
+              …… 以此类推 ……
+3:布局名,activity布局名,activity_customer_list.xml
+       Fragment布局名,fragment_customer_list.xml
+                     自定义布局名,view_popwindow_contacts.xml
+                     抽出来的公共布局(include),layout_customer_bottom.xml
+4:布局内id定义
+       button  btn_customer_name
+       textview tv_customer_name
+       edittext et_customer_name
+       imageview iv_customer_name
+       listview lv_customer
+                  布局组件 layout_customer
+5:package分类 
+                    主包 com.qdtcn.customer
+                    适配包com.qdtcn.customer.adapter
+                    网络请求+数据解析包com.qdtcn.customer.http
+                    实体包com.qdtcn.customer.model
+                    自定义view包com.qdtcn.customer.view
+                    工具包com.qdtcn.customer.util
+                    
+6:发版须知(以下都是针对正式版)：
+	1.检查com.qdtcn.frame.constant下LCommands中地址是否已换成正式地址BASE_URL
+	2.检查AndroidManifest.xml中的极光推送JPUSH_APPKEY是否已改成正式key
+	3.检查com.qdtcn.base下BaseApplication中捕获异常是否打开，并检查LLogger.IS_LOG日志打印是否关闭
+	4.检查com.qdtcn.frame.db下DATABASE_VERSION是否需要升级，如果数据库数据或结构有变动，将该值递增并在onUpgrade方法中做相应处理
+	5.检查清单文件AndroidManifest.xml版本号及版本名已更新
+	6.分享微信key分开货主端和司机端
+        
+        
+       
