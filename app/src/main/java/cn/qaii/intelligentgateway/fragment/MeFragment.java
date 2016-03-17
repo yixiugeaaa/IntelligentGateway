@@ -1,4 +1,4 @@
-package cn.qaii.intelligentgateway;
+package cn.qaii.intelligentgateway.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +12,7 @@ import cn.qaii.intelligentgateway.base.BaseFragment;
  * 功能说明
  * Created by xiuge on 2016/3/16 10:34.
  */
-public class ShopFragment extends BaseFragment {
+public class MeFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);

@@ -23,7 +23,7 @@ public class LLoader {
 		isInit = true;
 		LContext.init(context);
 		LDaoManager.init(context);
-		HttpExecutor.init();
+		HttpExecutor.init(context);
 		LLogger.e("数据初始化完毕");
 	}
 }

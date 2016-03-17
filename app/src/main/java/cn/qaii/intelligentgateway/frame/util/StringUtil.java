@@ -113,5 +113,18 @@ public class StringUtil {
 		}
 		return false;
 	}
+
+	/**
+	 * 验证输入的邮箱格式是否符合
+	 */
+	public static boolean isPassword(String password) {
+		try {
+			if(password.length()>=6)
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 	
 }

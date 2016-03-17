@@ -18,6 +18,7 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import cn.qaii.intelligentgateway.base.BaseSplashActivity;
+import cn.qaii.intelligentgateway.user.LoginActivity;
 
 /**
  * 启动页 SplashActivity
@@ -91,7 +92,7 @@ public class SplashActivity extends BaseSplashActivity {
 
 			@Override
 			public void run() {
-				startActivity(new Intent(mContext, MainActivity.class));
+				startActivity(new Intent(mContext, LoginActivity.class));
 				finish();
 			}
 		}, 1000);

@@ -1,123 +1,226 @@
 package cn.qaii.intelligentgateway.frame.http;
 
+import android.content.Context;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Build;
+
 import com.google.gson.GsonBuilder;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.params.ConnManagerParams;
-import org.apache.http.conn.scheme.PlainSocketFactory;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.protocol.HTTP;
+import org.apache.http.Header;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
-import cn.qaii.intelligentgateway.frame.constant.LConstants;
 import cn.qaii.intelligentgateway.frame.constant.LContext;
+import cn.qaii.intelligentgateway.frame.http.HttpRequest.RequestListener;
 import cn.qaii.intelligentgateway.frame.util.LLogger;
+import cn.qaii.intelligentgateway.frame.util.PrefConstants;
+import cn.qaii.intelligentgateway.frame.util.PrefUtils;
+
 
 /**
  * 网络请求池
+ * 
  * @author larry
- *
+ * 
  */
 public class HttpExecutor {
 	
-	private static HttpClient httpClient;
-	
-	private static final String COMMAND = "CMDId";
-	private static final String JSON = "JSon";
-	private static final String TOKEN = "Token";
-	private static final String MD5 = "MD5";
-	private static final String MD5_VALUE = "";//MD5加密值，目前没有用到，先默认空字符串
+	private static Context mContext;
+
+	private static AsyncHttpClient mClient = new AsyncHttpClient();
 	
 	/**
 	 * 初始化HttpExecutor,开启应用时初始化
 	 */
-	public static void init() {
-        HttpParams params =new BasicHttpParams();
-        /* 从连接池中取连接的超时时间 */ 
-        ConnManagerParams.setTimeout(params, 50000);
-        /* 连接超时 */ 
-        HttpConnectionParams.setConnectionTimeout(params, 50000); 
-        /* 请求超时 */
-        HttpConnectionParams.setSoTimeout(params, 100000);
-        
-        SchemeRegistry schemeRegistry = new SchemeRegistry();
-        schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));//////////////////////////////////////////////////////////////
+	public static void init(Context context) {
+		if (mClient == null) {
+			mClient = new AsyncHttpClient();
+			mClient.setTimeout(10000);
+		}
+		mContext = context;
+	}
 
-        ThreadSafeClientConnManager cm=new ThreadSafeClientConnManager(params, schemeRegistry);
-        httpClient = new DefaultHttpClient(cm,params);
+	/**
+	 * 定义一个异步网络客户端 默认超时为10秒 当超过，默认重连次数为5次 默认最大连接数为10个 　　
+	 */
+	static {
+		mClient.setTimeout(10000);
+	}
+
+	/**
+	 * post 请求
+	 * 
+	 * @param url
+	 *            API 地址
+	 * @param params
+	 *            请求的参数
+	 * @param handler
+	 *            数据加载句柄对象
+	 */
+	public static void post(String url, RequestParams params,
+			AsyncHttpResponseHandler handler) {
+		mClient.post(url, params, handler);
+	}
+
+	public static void get(String url, RequestParams params,
+			AsyncHttpResponseHandler handler) {
+		mClient.get(url, params, handler);
+	}
+	
+	public static void cancel(Context context){
+		mClient.cancelRequests(context, true);
+	}
+
+	/**
+	 * 
+	 * requestByPost(这里用一句话描述这个方法的作用) post请求方式 (这里描述这个方法适用条件 – 可选)
+	 * 
+	 * @param command
+	 * @param map
+	 * @param requestListener
+	 *            void
+	 * @exception
+	 * @since 1.0.0
+	 */
+	public static void requestByPost(final String command, Map<String, Object> map,
+			final HttpRequest.RequestListener requestListener) {
+		if(!LContext.isNetworkConnected){
+			LLogger.e("网络未连接,请连接后重试");
+			return;
+		}
+		final String requestJson = new GsonBuilder().disableHtmlEscaping().create().toJson(map);
+		putBaseMap(map);
+		try {
+			String url = command;
+			RequestParams params = new RequestParams();
+			for (String key : map.keySet()) {
+				params.put(key, map.get(key));
+			}
+			final long start = System.currentTimeMillis();
+			LLogger.e("本次请求基本参数： " + requestJson + " \n " + "接口： " + command);
+			mClient.post(url, params, new TextHttpResponseHandler() {
+				@Override
+				public void onSuccess(int statusCode, Header[] headers, String response) {
+//					LLogger.e("onSuccess" + response.toString());
+					LLogger.e("本次请求[" + command + "]耗时:" + (System.currentTimeMillis() - start));
+					requestListener.requestCompleted(response);
+				}
+
+				@Override
+				public void onFailure(int statusCode, Header[] headers, String response, Throwable throwable) {
+					LLogger.e("onFailure" + response);
+					LLogger.e("本次请求[" + command + "]耗时:" + (System.currentTimeMillis() - start));
+					requestListener.requestCompleted(null);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
-	 * 发送请求
+	 * 
+	 * requestByGet(这里用一句话描述这个方法的作用) 通过get方式请求网络
+	 * (这里描述这个方法适用条件 – 可选)
 	 * @param command
-	 * @param param
-	 * @return
+	 * @param map
+	 * @param requestListener void
+	 * @exception
+	 * @since  1.0.0
 	 */
-	public static String request(String command, Map<String, Object> param) {
-		InputStream content = null;
-		String requestJson = new GsonBuilder().disableHtmlEscaping().create().toJson(param);
+	public static void requestByGet(final String command, Map<String, Object> map,
+			final RequestListener requestListener) {
+		if(!LContext.isNetworkConnected){
+			LLogger.e("网络未连接,请连接后重试");
+			return;
+		}
+		final String requestJson = new GsonBuilder().disableHtmlEscaping().create().toJson(map);
+		putBaseMap(map);
 		try {
-			HttpPost request = new HttpPost(LConstants.BASE_URL);
-			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			
-			LLogger.e("本次请求串为 ： " + requestJson + " \n " + "基本参数 ： " + command + " : " + LContext.TOKEN + " : " + MD5_VALUE + " : " + LConstants.BASE_URL);
-			params.add(new BasicNameValuePair(COMMAND, command));
-			params.add(new BasicNameValuePair(JSON, requestJson));
-			params.add(new BasicNameValuePair(TOKEN, LContext.TOKEN));
-			params.add(new BasicNameValuePair(MD5, MD5_VALUE));
-			
-			request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-			long start = System.currentTimeMillis();
-			if(httpClient == null){
-				init();
+			String url = command;
+			RequestParams params = new RequestParams();
+			for (String key : map.keySet()) {
+				params.put(key, map.get(key));
 			}
-			HttpResponse response = httpClient.execute(request);
-			LLogger.e("本次请求[" + command + "]耗时:" + (System.currentTimeMillis() - start));
-			if (response.getStatusLine().getStatusCode() == 200) {
-				content = response.getEntity().getContent();
-				return getResponseData(content);
-			}
+			final long start = System.currentTimeMillis();
+			LLogger.e("本次请求基本参数： " + requestJson + " \n " + "接口： " + command);
+			mClient.get(url, params, new TextHttpResponseHandler() {
+				
+				@Override
+				public void onSuccess(int statusCode, Header[] headers, String response) {
+//					LLogger.e("onSuccess" + response.toString());
+					LLogger.e("本次请求[" + command + "]耗时:" + (System.currentTimeMillis() - start));
+					requestListener.requestCompleted(response);
+				}
+				
+				@Override
+				public void onFailure(int statusCode, Header[] headers, String response, Throwable throwable) {
+					LLogger.e("onFailure" + response);
+					LLogger.e("本次请求[" + command + "]耗时:" + (System.currentTimeMillis() - start));
+					requestListener.requestCompleted(null);
+				}
+			});
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				content.close();
-			} catch (Exception e) {}
 		}
-		return null;
 	}
+	
 	/**
-	 * 获取返回值数据
-	 * @param content
-	 * @return
-	 * @throws IOException
+	 * 封装必传信息
+	 * putBaseMap(这里用一句话描述这个方法的作用)
+	 * (这里描述这个方法适用条件 – 可选)
+	 * @param map
+	 * void
+	 * @exception
+	 * @since  1.0.0
 	 */
-	private static String getResponseData(InputStream content) throws IOException {
-		//获取返回值
-		byte[] data = new byte[1024 * 8];
-		StringBuffer strBuf = new StringBuffer();
-		
-		int count = 0;
-		while((count = content.read(data)) != -1) {
-			strBuf.append(new String(data, 0, count));
+	private static void putBaseMap(Map<String, Object> map){
+		String token = PrefUtils.getPrefString(mContext, PrefConstants.ACCESS_TOKEN, "");
+		map.put("accessToken", token);
+		// 手机sdk版本
+		int sdk = Build.VERSION.SDK_INT;
+		String release = Build.VERSION.RELEASE;
+		// 获取手机品牌
+		String brand = Build.BRAND;
+		String model = Build.MODEL;
+		// 获取手机语言
+		String locale = Locale.getDefault().getLanguage();
+		// version code
+		int versionCode = 0;
+		try {
+			versionCode = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode;
+		} catch (NameNotFoundException e1) {
+			e1.printStackTrace();
 		}
-		return strBuf.toString();
+		// imei imsi
+		/*TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+		// 89860113817058951155
+		String imei = tm.getSimSerialNumber();
+		String phoneNumber = tm.getLine1Number();
+		// 460011886607072
+		String imsi = tm.getSubscriberId();
+		map.put("sdk", sdk);
+		map.put("release", release);
+		map.put("brand", brand);
+		map.put("model", model);
+		map.put("locale", locale);123456
+		map.put("versionCode", versionCode);
+		map.put("imei", imei);
+		map.put("imsi", imsi);
+		map.put("phoneNumber", phoneNumber);
+		LocationInfo location = BaiduMapManager.getLocationInfo(mContext);
+		double latitude = 0,longitude = 0;
+		if(location != null){
+			latitude = location.getLat();
+			longitude = location.getLng();
+		}
+		map.put("latitude", latitude);
+		map.put("longitude", longitude);*/
 	}
 
 }

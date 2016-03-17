@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.qaii.intelligentgateway.base.BaseActivity;
+import cn.qaii.intelligentgateway.fragment.HomeFragment;
+import cn.qaii.intelligentgateway.fragment.MeFragment;
+import cn.qaii.intelligentgateway.fragment.ShopFragment;
 import cn.qaii.intelligentgateway.frame.util.ToastHelper;
 import cn.qaii.viewutil_lib.navigation.NavigationView;
 

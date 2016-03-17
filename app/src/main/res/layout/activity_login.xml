@@ -1,0 +1,73 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_content"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/abs__action_bar_default_height"
+        layout="@layout/view_actionbar_base" />
+
+    <View
+        style="@style/style_divider_h"
+        android:layout_marginTop="10dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" >
+
+        <EditText
+            android:id="@+id/et_account"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@null"
+            android:hint="手机号"
+            android:inputType="phone"
+            android:paddingLeft="10dp"
+            android:textColor="@color/tv_text"
+            android:textSize="16sp" />
+
+        <View style="@style/style_divider_h" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/et_key_code"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:password="true"
+                android:background="@null"
+                android:hint="密码"
+                android:inputType="phone"
+                android:paddingLeft="10dp"
+                android:textColor="@color/tv_text"
+                android:textSize="16sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View style="@style/style_divider_h" />
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/btn_base_shape_selector"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:text="登录"
+        android:textColor="@color/base_color"
+        android:textSize="16sp" />
+
+</LinearLayout>

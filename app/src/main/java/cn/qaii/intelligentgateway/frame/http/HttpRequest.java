@@ -1,115 +1,138 @@
 package cn.qaii.intelligentgateway.frame.http;
 
-import android.os.AsyncTask;
+import android.content.Context;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Map;
 
+import cn.qaii.intelligentgateway.frame.constant.LCommands;
 import cn.qaii.intelligentgateway.frame.util.LLogger;
 import cn.qaii.intelligentgateway.frame.util.StringUtil;
 
 
 /**
- * 网络请求基层类
- * @author larry
+ * 
+ * HttpRequest
+ * 
+ * @author larry 2015-11-3 下午2:36:38 
+ * @version 1.0.0
  *
  */
-public abstract class HttpRequest extends AsyncTask<Object, Object, HttpResult> {
+public abstract class HttpRequest {
 	
 	public Map<String, Object> mParam;
 	public String mCommand;
+	public Context mBaseContext;
 	
-	@Override
-	protected HttpResult doInBackground(Object... params) {
+	/**
+	 * 
+	 * requestByPost(这里用一句话描述这个方法的作用)
+	 * (这里描述这个方法适用条件 – 可选)
+	 * @param map
+	 * void
+	 * @exception
+	 * @since  1.0.0
+	 */
+	protected void requestByPost(final Map<String, Object> map) {
 		initParams();
-		if(isCancelled()) {
-			return null;
-		}
-		HttpResult result = request(mParam);
-		if(result.isHttpSuccess() && result.getResultCode() >= 0) {
-			onBackgroundSuccess(result);
-		}
-		return result;
+		HttpExecutor.requestByPost(mCommand, map, new RequestListener() {
+			
+			@Override
+			public void requestCompleted(String data) {
+				HttpResult result;
+				if(StringUtil.isNull(data)){
+					result = new HttpResult();
+					result.setCode(HttpResult.RESULT_CODE_CONNECTION_EXCEPTION);
+					result.setDescription(HttpResult.RESULT_VALUE_CONNECTION_EXCEPTION);
+					result.setRequestSuccessed(false);
+					onRequestFail(result);
+				}else{
+					LLogger.e("请求返回值长度：" + data.length() + "\n" + data);
+					parseResult(data);
+				}
+			}
+		});
 	}
 	
-	private HttpResult request(final Map<String, Object> param) {
-		String resultStr = HttpExecutor.request(mCommand, param);
-		
-		if(!StringUtil.isNull(resultStr)) {
-			LLogger.e("请求返回值长度：" + resultStr.length() + "\n" + resultStr);
-		}
-		
-		HttpResult result = parseResult(resultStr);
-		return result;
+	/**
+	 * 
+	 * requestByGet(这里用一句话描述这个方法的作用)
+	 * (这里描述这个方法适用条件 – 可选)
+	 * @param map
+	 * void
+	 * @exception
+	 * @since  1.0.0
+	 */
+	protected void requestByGet(final Map<String, Object> map) {
+		initParams();
+		HttpExecutor.requestByGet(mCommand, map, new RequestListener() {
+			
+			@Override
+			public void requestCompleted(String data) {
+				HttpResult result;
+				if(StringUtil.isNull(data)){
+					result = new HttpResult();
+					result.setCode(HttpResult.RESULT_CODE_CONNECTION_EXCEPTION);
+					result.setDescription(HttpResult.RESULT_VALUE_CONNECTION_EXCEPTION);
+					result.setRequestSuccessed(false);
+					onRequestFail(result);
+				}else{
+					LLogger.e("请求返回值长度：" + data.length() + "\n" + data);
+					parseResult(data);
+				}
+			}
+		});
 	}
 
-	@Override
-	protected void onPostExecute(HttpResult result) {
-		if(result == null) {
-			//中途取消
-		} else if(result.isHttpSuccess() && result.getResultCode() >= 0) {
-			onRequestSuccess(result);
-		} else {
-			onRequestFail(result);
-		}
-	}
-
-	public HttpResult parseResult(String resultStr) {
-		
-		HttpResult result = new HttpResult();
-		
-		if(StringUtil.isNull(resultStr)) {
-			result.setResultCode(HttpResult.RESULT_CODE_CONNECTION_EXCEPTION);
-			result.setResultMessage(HttpResult.RESULT_CODE_CONNECTION_EXCEPTION_VALUE);
-			result.setHttpSuccess(false);
-			return result;
-		}
-		result = parser(resultStr);
-		
-		return result;
-	}
-	
-	private HttpResult parser(String str){
+	/**
+	 * 统一解析返回值
+	 * parseResult(这里用一句话描述这个方法的作用)
+	 * (这里描述这个方法适用条件 – 可选)
+	 * @param data
+	 * void
+	 * @exception
+	 * @since  1.0.0
+	 */
+	public void parseResult(String data) {
 		HttpResult result = new HttpResult();
 		try {
-			if(str.substring(0, 1).equals("[")){//老接口
-				JSONArray array = new JSONArray(str);
-				result.setResultData(array.toString());
-				result.setHttpSuccess(true);
-				return result;
-			}
-			JSONObject object = new JSONObject(str);
-			if(object.has(HttpResult.RETURN_CODE)){
-				result.setNewInterf(true);//新接口
-				int returnCode = object.getInt(HttpResult.RETURN_CODE);
-				if(returnCode == 0){
-					result.setResultCode(returnCode);
-					result.setResultMessage(object.getString(HttpResult.RETURN_DES));
-					result.setResultData(object.getString(HttpResult.RETURN_DATA));
-					result.setHttpSuccess(true);
-				}else{
-					result.setResultCode(returnCode);
-					result.setResultMessage(HttpResult.RESULT_CODE_SERVER_EXCEPTION_VALUE);
-					result.setHttpSuccess(false);
+			JSONObject object = new JSONObject(data);
+			if (object.has(HttpResult.RESPONSE)) {
+				JSONObject subObject = new JSONObject(object.getString(HttpResult.RESPONSE));
+				result.setDescription(subObject.getString(HttpResult.DESCRIPTION));
+				result.setNumReturn(subObject.getInt(HttpResult.NUMRETURN));
+				result.setResult(subObject.getString(HttpResult.RESULT));
+				result.setCode(subObject.getInt(HttpResult.CODE));
+				if (result.getCode() == HttpResult.RESULT_CODE_SUCCESS) {
+					result.setRequestSuccessed(true);
+					onRequestSuccess(result);
+				} else {
+					result.setRequestSuccessed(false);
+					onRequestFail(result);
 				}
-			}else{
-				result.setNewInterf(false);//老接口
-				//老接口暂不处理
+			} else {
+				result.setCode(HttpResult.RESULT_CODE_SERVER_EXCEPTION);
+				result.setDescription(HttpResult.RESULT_VALUE_SERVER_EXCEPTION);
+				result.setRequestSuccessed(false);
+				onRequestFail(result);
 			}
-		} catch (JSONException e) {
-//			LLogger.e("解析返回值时发生异常" + e);
-			result.setResultCode(HttpResult.RESULT_CODE_UNKNOW_EXCEPTION);
-			result.setResultMessage(HttpResult.RESULT_CODE_UNKNOW_EXCEPTION_VALUE);
-			result.setHttpSuccess(false);
+		} catch (Exception e) {
+			if(StringUtil.isEqual(mCommand, LCommands.GET_DATA)){
+				result.setCode(HttpResult.RESULT_CODE_SUCCESS);
+				result.setDescription(HttpResult.RESULT_VALUE_SERVER_SUCCESS);
+				result.setResult(data);
+				result.setRequestSuccessed(true);
+				onRequestSuccess(result);
+			}else{
+				e.printStackTrace();
+				result.setCode(HttpResult.RESULT_CODE_UNKNOW_EXCEPTION);
+				result.setDescription(HttpResult.RESULT_VALUE_UNKNOW_EXCEPTION);
+				result.setRequestSuccessed(false);
+				onRequestFail(result);
+			}
 		}
-		
-		return result;
 	}
-	
-	protected void onBackgroundSuccess(HttpResult result) {}
 	
 	/**
 	 * 请求失败，网络连接不上，或服务器端发生异常，抑或是发生未知异常
@@ -126,4 +149,8 @@ public abstract class HttpRequest extends AsyncTask<Object, Object, HttpResult> 
 	 * @param result
 	 */
 	protected abstract void onRequestSuccess(HttpResult result);
+	
+	public interface RequestListener {
+		public void requestCompleted(String data);
+	}
 }
