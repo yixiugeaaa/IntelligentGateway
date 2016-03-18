@@ -126,5 +126,16 @@ public class StringUtil {
 		}
 		return false;
 	}
+
+	public static String sumStr(String string){
+		byte [] stringArr =string.getBytes() ;
+		byte sum=0;
+		for (int i=0;i<string.length();i++){
+			sum+=stringArr[i];
+		}
+		byte[] sumStr=new byte[1];
+		sumStr[0]=sum;
+		return string+(new String(sumStr));
+	}
 	
 }

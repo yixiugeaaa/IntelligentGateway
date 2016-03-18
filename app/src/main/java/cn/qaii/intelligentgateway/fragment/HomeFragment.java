@@ -3,6 +3,7 @@ package cn.qaii.intelligentgateway.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import java.net.Socket;
 
 import cn.qaii.intelligentgateway.R;
 import cn.qaii.intelligentgateway.base.BaseFragment;
+import cn.qaii.intelligentgateway.frame.util.StringUtil;
+import cn.qaii.intelligentgateway.frame.util.ToastHelper;
 import cn.qaii.viewutil_lib.swipe.SwipeRefreshLayout;
 
 /**
@@ -32,13 +35,17 @@ public class HomeFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     private SwipeRefreshLayout mSwipeLayout;
     Socket socket = new Socket();
     String recvStr = null;
-
-
-
+    PrintWriter out;
+    BufferedReader recvBuf;
 
     private Handler myHandler=new Handler(){
         public void handleMessage(Message msg) {
             String recvStr = (String) msg.obj;
+            if(recvStr.regionMatches(2,"CORECT",0,6)){
+                ToastHelper.toastLong(mContext,"连接成功");
+            }else{
+                ToastHelper.toastLong(mContext,"连接失败");
+            }
             ((TextView)getView().findViewById(R.id.recv)).setText(recvStr);
         }
     };
@@ -55,7 +62,7 @@ public class HomeFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         super.onActivityCreated(savedInstanceState);
     }
 
-    private void initView(View view){
+    private void initView(View view) {
         mSwipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.layout_swipe);
         mSwipeLayout.setColor(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
@@ -64,26 +71,47 @@ public class HomeFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         mSwipeLayout.setMode(SwipeRefreshLayout.Mode.PULL_FROM_START);
         mSwipeLayout.setOnRefreshListener(this);
         view.findViewById(R.id.btn_send).setOnClickListener(this);
-        new Thread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                        socket.connect(new InetSocketAddress("192.168.1.1", 8000),1000);
-                        BufferedReader recvBuf;
-                        recvBuf = new BufferedReader(new InputStreamReader(
-                                socket.getInputStream(), "gb2312"));
+        view.findViewById(R.id.btn_content).setOnClickListener(this);
+
+        try {
+            socket.connect(new InetSocketAddress("192.168.1.1", 8000), 1000);
+
+            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "gb2312")),
+                    true);
+            recvBuf = new BufferedReader(new InputStreamReader(
+                    socket.getInputStream(), "gb2312"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        new Thread() {
+            @Override
+            public void run() {
+                while (true){
+                    Log.e("aa","ssss");
+                    try {
+                        if(recvBuf!=null) {
                             recvStr = recvBuf.readLine();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                            if (recvStr!=null){
+                                Message msg = new Message();
+                                msg.obj = recvStr;// 发送当前需要更新的窗口的NUM
+                                myHandler.sendMessage(msg);
+                            }else
+                                return;
+                        }else{
+                            Message msg = new Message();
+                            msg.obj = "未连接";// 发送当前需要更新的窗口的NUM
+                            myHandler.sendMessage(msg);
                         }
-                        Message msg = new Message();
-                        msg.obj = recvStr;// 发送当前需要更新的窗口的NUM
-                        myHandler.sendMessage(msg);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
-        ).start();
+
+            }
+        }.start();
     }
+
 
     @Override
     public void onRefresh() {
@@ -96,16 +124,15 @@ public class HomeFragment extends BaseFragment implements SwipeRefreshLayout.OnR
             case  R.id.btn_send:
                 String name= ((EditText)getView().findViewById(R.id.name)).getText().toString().trim();
                 String pwd=((EditText)getView().findViewById(R.id.pwd)).getText().toString().trim();
-                Socket socket = new Socket();
-                PrintWriter out;
-                try {
-                    socket.connect(new InetSocketAddress("192.168.1.1", 8000),1000);
-                    out=new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "gb2312")),
-                            true);
-                    out.println("FF" + name + "FA" + pwd + "FECRC");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                String pwdStr="FF" + name + "FA" + pwd + "FE";
+                String sendStr=StringUtil.sumStr(pwdStr);
+                out.println(sendStr);
+                break;
+            case R.id.btn_content:
+                String content=((EditText)getView().findViewById(R.id.content_send)).getText().toString().trim();
+                String ipStr="FFIP"+content+"FE";
+                String sendIp=StringUtil.sumStr(ipStr);
+                out.println(sendIp);
         }
     }
 }
