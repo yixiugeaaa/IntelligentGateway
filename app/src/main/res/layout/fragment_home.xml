@@ -26,53 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
-                <EditText
-                    android:id="@+id/name"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/abs__action_bar_default_height"
-                    android:hint="账号"/>
 
-                <EditText
-                    android:id="@+id/pwd"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/abs__action_bar_default_height"
-                    android:hint="密码"/>
-
-
-                <Button
-                    android:id="@+id/btn_send"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/abs__action_bar_default_height"
-                    android:text="发送"/>
-
-              <!--  <EditText
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/abs__action_bar_default_height"
-                    android:hint="请输入要发送的内容"/>
-
-                <Button
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/abs__action_bar_default_height"
-                    android:text="发送"/>-->
-                <TextView
-                    android:id="@+id/recv"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="20dp"
-                    android:layout_marginTop="10dp"
-                    android:text="服务器返回信息"/>
-
-                <EditText
-                    android:id="@+id/content_send"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/abs__action_bar_default_height"
-                    android:hint="服务器IP"/>
-
-                <Button
-                    android:id="@+id/btn_content"
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/abs__action_bar_default_height"
-                    android:text="发送"/>
 
 
             </LinearLayout>

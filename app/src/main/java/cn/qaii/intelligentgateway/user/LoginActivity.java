@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.view.Window;
 
-import cn.qaii.intelligentgateway.MainActivity;
 import cn.qaii.intelligentgateway.R;
 import cn.qaii.intelligentgateway.base.BaseActivity;
 import cn.qaii.intelligentgateway.frame.constant.LContext;
@@ -125,8 +124,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener{
 					LoadHelper.show(mContext);
 					new UserRequest(mContext, mHandler).login(etAccount.getText().toString(), etPassword.getText().toString());
 				}
-				intent = new Intent(mContext, MainActivity.class);
-				startActivity(intent);
 				break;
 			case R.id.layout_right:
 				intent = new Intent(mContext, RegisterActivity.class);
@@ -135,8 +132,5 @@ public class LoginActivity extends BaseActivity implements OnClickListener{
 			default:
 				break;
 		}
-
-
 	}
-	
 }

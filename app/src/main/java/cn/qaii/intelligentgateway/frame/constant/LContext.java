@@ -16,6 +16,8 @@ public class LContext {
 	public static int height;public static boolean isNetworkConnected = true;//网络是否连接
 	public static int networkType = 0;//网络类型
 
+
+
 	public static void init(Context context) {
 		if (context == null) {
 			return;
