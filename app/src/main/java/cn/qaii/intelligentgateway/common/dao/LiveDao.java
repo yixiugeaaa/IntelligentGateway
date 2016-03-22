@@ -18,13 +18,13 @@ import cn.qaii.intelligentgateway.model.LiveInfo;
  *
  */
 public class LiveDao {
-	
+
 	private Dao<LiveInfo, Integer> liveDao;
-	
+
 	public LiveDao() {
 		liveDao = LDaoManager.createDao(LiveInfo.class);
 	}
-	
+
 	/**
 	 * 保存直播间
 	 * @param liveInfo
@@ -36,7 +36,7 @@ public class LiveDao {
 			LLogger.e("创建数据类型时异常" + e);
 		}
 	}
-	
+
 	/**
 	 * 删除指定直播间
 	 * @param info
@@ -50,7 +50,7 @@ public class LiveDao {
 			LLogger.e("删除自收藏时发生异常 ： " + e);
 		}
 	}
-	
+
 	/**
 	 * 批量保存直播间
 	 * @param infos

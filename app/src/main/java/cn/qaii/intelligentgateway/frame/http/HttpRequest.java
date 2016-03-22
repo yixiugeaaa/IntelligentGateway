@@ -2,6 +2,7 @@ package cn.qaii.intelligentgateway.frame.http;
 
 import android.content.Context;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -37,17 +38,17 @@ public abstract class HttpRequest {
 	protected void requestByPost(final Map<String, Object> map) {
 		initParams();
 		HttpExecutor.requestByPost(mCommand, map, new RequestListener() {
-			
+
 			@Override
 			public void requestCompleted(String data) {
 				HttpResult result;
-				if(StringUtil.isNull(data)){
+				if (StringUtil.isNull(data)) {
 					result = new HttpResult();
 					result.setCode(HttpResult.RESULT_CODE_CONNECTION_EXCEPTION);
 					result.setDescription(HttpResult.RESULT_VALUE_CONNECTION_EXCEPTION);
 					result.setRequestSuccessed(false);
 					onRequestFail(result);
-				}else{
+				} else {
 					LLogger.e("请求返回值长度：" + data.length() + "\n" + data);
 					parseResult(data);
 				}
@@ -67,22 +68,43 @@ public abstract class HttpRequest {
 	protected void requestByGet(final Map<String, Object> map) {
 		initParams();
 		HttpExecutor.requestByGet(mCommand, map, new RequestListener() {
-			
+
 			@Override
 			public void requestCompleted(String data) {
 				HttpResult result;
-				if(StringUtil.isNull(data)){
+				if (StringUtil.isNull(data)) {
 					result = new HttpResult();
 					result.setCode(HttpResult.RESULT_CODE_CONNECTION_EXCEPTION);
 					result.setDescription(HttpResult.RESULT_VALUE_CONNECTION_EXCEPTION);
 					result.setRequestSuccessed(false);
 					onRequestFail(result);
-				}else{
+				} else {
 					LLogger.e("请求返回值长度：" + data.length() + "\n" + data);
-					parseResult(data);
+					result(data);
 				}
 			}
 		});
+	}
+
+	/**
+	 * 解析只返回操作结果的命令
+	 * @param data
+	 */
+	public void result(String data){
+		HttpResult result = new HttpResult();
+		try {
+			JSONObject object = new JSONObject(data);
+			result.setResult(data);
+			if(object.getInt(HttpResult.RESULT)==HttpResult.RESULT_CODE_SUCCESS){
+				result.setRequestSuccessed(true);
+				onRequestSuccess(result);
+			}else {
+				result.setRequestSuccessed(false);
+				onRequestFail(result);
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -112,6 +134,8 @@ public abstract class HttpRequest {
 					onRequestFail(result);
 				}
 			} else {
+
+
 				result.setCode(HttpResult.RESULT_CODE_SERVER_EXCEPTION);
 				result.setDescription(HttpResult.RESULT_VALUE_SERVER_EXCEPTION);
 				result.setRequestSuccessed(false);

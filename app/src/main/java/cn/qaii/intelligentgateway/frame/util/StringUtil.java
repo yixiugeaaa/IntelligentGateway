@@ -119,7 +119,7 @@ public class StringUtil {
 	 */
 	public static boolean isPassword(String password) {
 		try {
-			if(password.length()>=6)
+			if(password.length()<6)
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

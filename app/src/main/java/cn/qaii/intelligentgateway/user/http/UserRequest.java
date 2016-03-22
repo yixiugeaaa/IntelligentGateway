@@ -7,6 +7,7 @@ import android.os.Message;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.qaii.intelligentgateway.common.http.parser.ResultParser;
 import cn.qaii.intelligentgateway.frame.constant.LCommands;
 import cn.qaii.intelligentgateway.frame.http.HttpResult;
 import cn.qaii.intelligentgateway.frame.http.LHttpRequest;
@@ -16,6 +17,7 @@ import cn.qaii.intelligentgateway.frame.http.LHttpRequest.RequestCompleteListene
 public class UserRequest extends LHttpRequest implements RequestCompleteListener {
 	public static final int LOGIN_SUCCESS = 100;// 登录成功
 	public static final int GET_USER_INFO_SUCCESS = 101;// 获取用户信息成功
+	public static final int REGISTER_SUCESS=102;//注册成功
 	public static final int ADD_ADDRESS_SUCCESS = 102;// 添加地址成功
 	public static final int GET_ADDRESS_LIST_SUCCESS = 103;// 获取地址列表成功
 	public static final int GET_DEFAULT_ADDRESS_LIST_SUCCESS = 104;// 获取默认地址成功
@@ -40,18 +42,14 @@ public class UserRequest extends LHttpRequest implements RequestCompleteListener
 	 * 登录
 	 * login(这里用一句话描述这个方法的作用)
 	 * (这里描述这个方法适用条件 – 可选)
-	 * @param phone
-	 * @param keyCode
-	 * @param userType
-	 * @param sourcePlatform
 	 * void
 	 * @exception
 	 * @since  1.0.0
 	 */
 	public void login(String phone, String password) {
 		param = new HashMap<String, Object>();
-		param.put("phone", "1");
-		param.put("password","2");
+		param.put("phone", phone);
+		param.put("password",password);
 		command = LCommands.LOGIN;
 		requestByGet(param);
 	}
@@ -69,6 +67,15 @@ public class UserRequest extends LHttpRequest implements RequestCompleteListener
 		param = new HashMap<String, Object>();
 		param.put("accessToken", accessToken);
 		command = LCommands.GET_USER_INFO;
+		requestByGet(param);
+	}
+
+	public void register(String tel,String verification,String pwd){
+		param = new HashMap<String, Object>();
+		param.put("phone", tel);
+		param.put("verification",verification);
+		param.put("password",pwd);
+		command = LCommands.REGISTER;
 		requestByGet(param);
 	}
 
@@ -139,6 +146,10 @@ public class UserRequest extends LHttpRequest implements RequestCompleteListener
 		}else if (command.equals(LCommands.GET_USER_INFO)) {
 			mMessage.what = GET_USER_INFO_SUCCESS;
 			mMessage.obj = UserParser.parseUserInfo(result.getResult());
+			mHandler.sendMessage(mMessage);
+		}else if (command.equals(LCommands.REGISTER)){
+			mMessage.what = REGISTER_SUCESS;
+			mMessage.obj = ResultParser.parseInfo(result.getResult());
 			mHandler.sendMessage(mMessage);
 		}/*else if (command.equals(LCommands.ADD_ADDRESS)) {
 			mMessage.what = ADD_ADDRESS_SUCCESS;

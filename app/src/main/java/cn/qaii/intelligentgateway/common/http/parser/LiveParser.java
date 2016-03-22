@@ -11,7 +11,7 @@ import cn.qaii.intelligentgateway.model.LiveInfo;
  *
  */
 public class LiveParser {
-	
+
 	/**
 	 * 解析直播信息数据列表
 	 * @param data

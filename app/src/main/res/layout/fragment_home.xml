@@ -1,7 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_content"
     android:orientation="vertical">
 
     <include
@@ -15,22 +14,33 @@
         android:id="@+id/layout_swipe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/bg_add_device"
         android:orientation="vertical" >
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="none" >
-
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:layout_height="wrap_content" >
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_gray_selector"
+                    android:layout_centerHorizontal="true"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"
+                    android:text="立即添加"
+                    android:textSize="20dp"
+                    android:textColor="@color/actionbar_color"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="100dp"/>
 
 
 
-            </LinearLayout>
-        </ScrollView>
+            </RelativeLayout>
+
     </cn.qaii.viewutil_lib.swipe.SwipeRefreshLayout>
+
+
 
 </LinearLayout>

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.view.Window;
 
+import cn.qaii.intelligentgateway.MainActivity;
 import cn.qaii.intelligentgateway.R;
 import cn.qaii.intelligentgateway.base.BaseActivity;
 import cn.qaii.intelligentgateway.frame.constant.LContext;
@@ -43,20 +44,22 @@ public class LoginActivity extends BaseActivity implements OnClickListener{
 			case UserRequest.LOGIN_SUCCESS:
 				LoadHelper.dismiss();
 				ToastHelper.toastShort(mContext, "登录成功");
-				String accessToken = msg.obj.toString();
+				String accessToken = "testtoken";
 				LContext.initLogin(mContext, accessToken, etAccount.getText().toString());
 				mHandler.postDelayed(new Runnable() {
 					
 					@Override
 					public void run() {
-						setResult(501);
+						Intent intent =new Intent(mContext, MainActivity.class);
+						startActivity(intent);
 						finish();
 					}
-				}, 1000);
+				}, 500);
 				break;
 			case LHttpRequest.REQUEST_FAILED:
 				LoadHelper.dismiss();
-				ToastHelper.toastShort(mContext, msg.obj.toString());
+				ToastHelper.toastShort(mContext, "登录失败");
+				//ToastHelper.toastShort(mContext, msg.obj.toString());
 				break;
 
 			default:

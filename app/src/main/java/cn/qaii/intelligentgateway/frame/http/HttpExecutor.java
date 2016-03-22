@@ -140,7 +140,7 @@ public class HttpExecutor {
 			return;
 		}
 		final String requestJson = new GsonBuilder().disableHtmlEscaping().create().toJson(map);
-		putBaseMap(map);
+		//putBaseMap(map);
 		try {
 			String url = command;
 			RequestParams params = new RequestParams();

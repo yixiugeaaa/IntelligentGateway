@@ -1,5 +1,6 @@
 package cn.qaii.intelligentgateway.user;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,7 +11,6 @@ import android.widget.EditText;
 
 import cn.qaii.intelligentgateway.R;
 import cn.qaii.intelligentgateway.base.BaseActivity;
-import cn.qaii.intelligentgateway.frame.constant.LContext;
 import cn.qaii.intelligentgateway.frame.http.LHttpRequest;
 import cn.qaii.intelligentgateway.frame.util.StringUtil;
 import cn.qaii.intelligentgateway.frame.util.ToastHelper;
@@ -37,23 +37,24 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			switch (msg.what) {
-			case UserRequest.LOGIN_SUCCESS:
+			case UserRequest.REGISTER_SUCESS:
 				LoadHelper.dismiss();
-				ToastHelper.toastShort(mContext, "登录成功");
-				String accessToken = msg.obj.toString();
-				LContext.initLogin(mContext, accessToken, etAccount.getText().toString());
+				ToastHelper.toastShort(mContext, "注册成功");
+				//String accessToken = msg.obj.toString();
+				//LContext.initLogin(mContext, accessToken, etAccount.getText().toString());
 				mHandler.postDelayed(new Runnable() {
-					
 					@Override
 					public void run() {
-						setResult(501);
+						Intent intent=new Intent(mContext,LoginActivity.class);
+						startActivity(intent);
 						finish();
 					}
-				}, 1000);
+				}, 500);
 				break;
 			case LHttpRequest.REQUEST_FAILED:
 				LoadHelper.dismiss();
-				ToastHelper.toastShort(mContext, msg.obj.toString());
+				//ToastHelper.toastShort(mContext, msg.obj.toString());
+				ToastHelper.toastShort(mContext, "注册失败");
 				break;
 
 			default:
@@ -96,7 +97,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 			return false;
 		}
 		if (StringUtil.isPassword(etPassword.getText().toString())) {
-			ToastHelper.toastShort(mContext, "请输入大于六位数的密码");
+			ToastHelper.toastShort(mContext, "请输入长度六位数以上的密码");
 			return false;
 		}
 		return true;
@@ -118,7 +119,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 			case R.id.btn_register:
 				if (check()) {
 					LoadHelper.show(mContext);
-					new UserRequest(mContext, mHandler).login(etAccount.getText().toString(), "");
+					new UserRequest(mContext, mHandler).register(etAccount.getText().toString(), etKeyCode.getText().toString(), etPassword.getText().toString());
 				}
 				break;
 		}
