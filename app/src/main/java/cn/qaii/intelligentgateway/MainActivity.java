@@ -9,13 +9,21 @@ import com.actionbarsherlock.view.Window;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import cn.qaii.intelligentgateway.base.BaseActivity;
+import cn.qaii.intelligentgateway.fragment.AddDeviceFragment;
 import cn.qaii.intelligentgateway.fragment.HomeFragment;
 import cn.qaii.intelligentgateway.fragment.MeFragment;
 import cn.qaii.intelligentgateway.fragment.ShopFragment;
+import cn.qaii.intelligentgateway.frame.http.LHttpRequest;
+import cn.qaii.intelligentgateway.frame.util.PrefConstants;
+import cn.qaii.intelligentgateway.frame.util.PrefUtils;
 import cn.qaii.intelligentgateway.frame.util.ToastHelper;
+import cn.qaii.intelligentgateway.gateway.http.GatewayRequest;
+import cn.qaii.intelligentgateway.user.http.UserRequest;
 import cn.qaii.viewutil_lib.navigation.NavigationView;
+import cn.qaii.viewutil_lib.view.LoadHelper;
 
 /**
  * MainActivity
@@ -24,6 +32,7 @@ import cn.qaii.viewutil_lib.navigation.NavigationView;
  */
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
+    private AddDeviceFragment mAddDeviceFragment;
     private ShopFragment mShopFragment;
     private HomeFragment mHomeFragment;
     private MeFragment mMeFragment;
@@ -35,6 +44,39 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Handler mHandler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case GatewayRequest.GET_DEVICE_SUCCESS:
+
+                case UserRequest.LOGIN_SUCCESS:
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            LoadHelper.dismiss();
+                            showAddDevice();
+                        }
+                    }, 1500);
+                    break;
+
+
+                case UserRequest.GET_USER_INFO_SUCCESS:
+                    Map<String, Object> map = (Map<String, Object>)msg.obj;
+                    if(map != null){
+
+                    }
+                    LoadHelper.dismiss();
+                    break;
+                case LHttpRequest.REQUEST_FAILED:
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            LoadHelper.dismiss();
+                            showAddDevice();
+                        }
+                    }, 1500);
+                    break;
+                default:
+                    break;
+            }
             super.handleMessage(msg);
         }
 
@@ -47,7 +89,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-        showHome();
+        showAddDevice();
+        //new GatewayRequest(mContext,mHandler).getGatewayInfo();
+        //new UserRequest(mContext,mHandler).login("15689953880","123456");
+        //LoadHelper.show(mContext);
     }
 
     private void initView() {
@@ -65,6 +110,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         naviView_home.setIconAlpha(1.0f);
     }
 
+    private void showAddDevice(){
+        hideFrag();
+        mFTransaction = mFManager.beginTransaction();
+        if (mAddDeviceFragment == null) {
+            mAddDeviceFragment = new AddDeviceFragment();
+            mFTransaction.add(R.id.fragment_container, mAddDeviceFragment, "addDevice");
+        }
+        mFTransaction.show(mAddDeviceFragment);
+        mFTransaction.commitAllowingStateLoss();
+        if(mBarTintManager != null){
+            mBarTintManager.setStatusBarTintResource(R.color.actionbar_color);
+        }
+    }
 
     private void showHome(){
         hideFrag();
@@ -109,10 +167,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void hideFrag() {
+        mAddDeviceFragment=((AddDeviceFragment) mFManager.findFragmentByTag("addDevice"));
         mHomeFragment = ((HomeFragment) mFManager.findFragmentByTag("home"));
         mShopFragment = ((ShopFragment) mFManager.findFragmentByTag("shop"));
         mMeFragment = ((MeFragment) mFManager.findFragmentByTag("me"));
         mFTransaction = mFManager.beginTransaction();
+        if (mAddDeviceFragment != null)
+            mFTransaction.hide(mAddDeviceFragment);
         if (mHomeFragment != null)
             mFTransaction.hide(mHomeFragment);
         if (mShopFragment != null)
@@ -141,7 +202,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.id_indicator_home:
                 resetOtherTabs();
                 mTabIndicators.get(0).setIconAlpha(1.0f);
-                showHome();
+                if (PrefUtils.getPrefBoolean(mContext,PrefConstants.IS_BINDED,false))
+                    showHome();
+                else
+                    showAddDevice();
                 break;
             case R.id.id_indicator_shop:
                 resetOtherTabs();

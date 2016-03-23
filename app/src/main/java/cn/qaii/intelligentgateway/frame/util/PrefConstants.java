@@ -15,6 +15,7 @@ public class PrefConstants {
 	
 	public static final String USER_ID = "userId";//登录用户id
 	public static final String ACCOUNT = "account";//登录用户账号
+	public static final String IS_BINDED="is_binded";//记录是否了设备
 	public static final String SELECTED_LOCATION="selected_location";
 	
 }

@@ -181,7 +181,8 @@ public class HttpExecutor {
 	 */
 	private static void putBaseMap(Map<String, Object> map){
 		String token = PrefUtils.getPrefString(mContext, PrefConstants.ACCESS_TOKEN, "");
-		map.put("accessToken", token);
+		String account=PrefUtils.getPrefString(mContext, PrefConstants.ACCOUNT, "");
+		map.put("account", account);
 		// 手机sdk版本
 		int sdk = Build.VERSION.SDK_INT;
 		String release = Build.VERSION.RELEASE;
