@@ -140,7 +140,7 @@ public class HttpExecutor {
 			return;
 		}
 		final String requestJson = new GsonBuilder().disableHtmlEscaping().create().toJson(map);
-		//putBaseMap(map);
+		putBaseMap(map);
 		try {
 			String url = command;
 			RequestParams params = new RequestParams();
@@ -181,8 +181,7 @@ public class HttpExecutor {
 	 */
 	private static void putBaseMap(Map<String, Object> map){
 		String token = PrefUtils.getPrefString(mContext, PrefConstants.ACCESS_TOKEN, "");
-		String account=PrefUtils.getPrefString(mContext, PrefConstants.ACCOUNT, "");
-		map.put("account", account);
+		map.put("accessToken", token);
 		// 手机sdk版本
 		int sdk = Build.VERSION.SDK_INT;
 		String release = Build.VERSION.RELEASE;
