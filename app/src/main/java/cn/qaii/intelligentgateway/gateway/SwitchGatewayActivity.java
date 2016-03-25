@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import cn.qaii.intelligentgateway.R;
 import cn.qaii.intelligentgateway.base.BaseSwipeActivity;
-import cn.qaii.viewutil_lib.photoview.ImagePagerActivity;
+import cn.qaii.intelligentgateway.base.ImagePagerActivity;
 
 public class SwitchGatewayActivity extends BaseSwipeActivity {
 

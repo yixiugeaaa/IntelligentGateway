@@ -11,7 +11,7 @@ layout="@layout/layout_refresh"加入即可
 
 右滑关闭动画：
 com.android.lib.swipe.back 放置了右滑关闭的代码
-使用时直接将需要此功能的activity继承SwipeBackActivity即可
+使用时直接将需要此功能的activity继承SwipeBackActivity，在再该Activity的注册清单中增加一句android:theme="@style/SwipeBackTheme"
 注意此代码在结合Viewpage时候有可能出现bug(viewpage右滑还有页面直接退出，或者右滑结束再次开启此程序又跳转到viewpage界面)
 目测问题出在对于当前事件所处view的获取  代码169行  getHitRect 使用有问题 
 

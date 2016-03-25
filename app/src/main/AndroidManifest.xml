@@ -54,7 +54,11 @@
             android:screenOrientation="portrait"  >
         </activity>
 
-        <activity android:name="cn.qaii.viewutil_lib.photoview.ImagePagerActivity"></activity>
+        <activity
+            android:name=".base.ImagePagerActivity"
+            android:label="操作步骤"
+            android:screenOrientation="portrait"
+            ></activity>
 
     </application>
 
