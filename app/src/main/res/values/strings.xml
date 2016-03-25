@@ -7,5 +7,9 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_swith_gateway">SwithGatewayActivity</string>
+    <string name="title_activity_switch_gateway">SwitchGatewayActivity</string>
+    <string name="title_activity_search_gateway">SearchGatewayActivity</string>
+    <string name="title_activity_network_config">NetworkConfigActivity</string>
 
 </resources>

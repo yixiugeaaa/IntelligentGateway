@@ -7,7 +7,6 @@ import android.os.Message;
 import java.util.HashMap;
 import java.util.Map;
 
-import cn.qaii.intelligentgateway.common.http.parser.ResultParser;
 import cn.qaii.intelligentgateway.frame.constant.LCommands;
 import cn.qaii.intelligentgateway.frame.http.HttpResult;
 import cn.qaii.intelligentgateway.frame.http.LHttpRequest;
@@ -149,7 +148,7 @@ public class UserRequest extends LHttpRequest implements RequestCompleteListener
 			mHandler.sendMessage(mMessage);
 		}else if (command.equals(LCommands.REGISTER)){
 			mMessage.what = REGISTER_SUCESS;
-			mMessage.obj = ResultParser.parseInfo(result.getResult());
+			mMessage.obj = result.getDescription();
 			mHandler.sendMessage(mMessage);
 		}/*else if (command.equals(LCommands.ADD_ADDRESS)) {
 			mMessage.what = ADD_ADDRESS_SUCCESS;

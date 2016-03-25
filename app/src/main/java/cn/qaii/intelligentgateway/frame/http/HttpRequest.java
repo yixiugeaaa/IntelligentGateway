@@ -80,7 +80,7 @@ public abstract class HttpRequest {
 					onRequestFail(result);
 				} else {
 					LLogger.e("请求返回值长度：" + data.length() + "\n" + data);
-					result(data);
+					parseResult(data);
 				}
 			}
 		});
@@ -134,8 +134,6 @@ public abstract class HttpRequest {
 					onRequestFail(result);
 				}
 			} else {
-
-
 				result.setCode(HttpResult.RESULT_CODE_SERVER_EXCEPTION);
 				result.setDescription(HttpResult.RESULT_VALUE_SERVER_EXCEPTION);
 				result.setRequestSuccessed(false);

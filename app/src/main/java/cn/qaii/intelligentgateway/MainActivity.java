@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import cn.qaii.intelligentgateway.base.BaseActivity;
-import cn.qaii.intelligentgateway.fragment.AddDeviceFragment;
 import cn.qaii.intelligentgateway.fragment.HomeFragment;
 import cn.qaii.intelligentgateway.fragment.MeFragment;
 import cn.qaii.intelligentgateway.fragment.ShopFragment;
@@ -20,6 +19,7 @@ import cn.qaii.intelligentgateway.frame.http.LHttpRequest;
 import cn.qaii.intelligentgateway.frame.util.PrefConstants;
 import cn.qaii.intelligentgateway.frame.util.PrefUtils;
 import cn.qaii.intelligentgateway.frame.util.ToastHelper;
+import cn.qaii.intelligentgateway.gateway.AddDeviceFragment;
 import cn.qaii.intelligentgateway.gateway.http.GatewayRequest;
 import cn.qaii.intelligentgateway.user.http.UserRequest;
 import cn.qaii.viewutil_lib.navigation.NavigationView;

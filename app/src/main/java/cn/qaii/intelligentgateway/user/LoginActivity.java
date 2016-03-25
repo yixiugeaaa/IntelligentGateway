@@ -44,8 +44,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener{
 			case UserRequest.LOGIN_SUCCESS:
 				LoadHelper.dismiss();
 				ToastHelper.toastShort(mContext, "登录成功");
-				String accessToken = "testtoken";
+				String accessToken = msg.obj.toString();
 				LContext.initLogin(mContext, accessToken, etAccount.getText().toString());
+
 				mHandler.postDelayed(new Runnable() {
 					
 					@Override
@@ -58,8 +59,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener{
 				break;
 			case LHttpRequest.REQUEST_FAILED:
 				LoadHelper.dismiss();
-				ToastHelper.toastShort(mContext, "登录失败");
-				//ToastHelper.toastShort(mContext, msg.obj.toString());
+				ToastHelper.toastShort(mContext, msg.obj.toString());
 				break;
 
 			default:

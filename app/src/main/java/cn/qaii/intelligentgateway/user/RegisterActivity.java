@@ -39,9 +39,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 			switch (msg.what) {
 			case UserRequest.REGISTER_SUCESS:
 				LoadHelper.dismiss();
-				ToastHelper.toastShort(mContext, "注册成功");
-				//String accessToken = msg.obj.toString();
-				//LContext.initLogin(mContext, accessToken, etAccount.getText().toString());
+				ToastHelper.toastShort(mContext, msg.obj.toString());
 				mHandler.postDelayed(new Runnable() {
 					@Override
 					public void run() {
@@ -53,8 +51,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 				break;
 			case LHttpRequest.REQUEST_FAILED:
 				LoadHelper.dismiss();
-				//ToastHelper.toastShort(mContext, msg.obj.toString());
-				ToastHelper.toastShort(mContext, "注册失败");
+				ToastHelper.toastShort(mContext, msg.obj.toString());
 				break;
 
 			default:
