@@ -21,7 +21,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="50dp"
             android:background="@color/white"
             android:baselineAligned="false"
             android:orientation="horizontal" >
@@ -39,17 +39,26 @@
                 hyman:color="@color/base_color" />
 
             <cn.qaii.viewutil_lib.navigation.NavigationView
+                android:id="@+id/id_indicator_linkage"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:padding="8dp"
+                hyman:icon="@drawable/iv_actionbar_tab_linkage"
+                hyman:text="联动规则"
+                hyman:text_size="12sp"
+                hyman:color="@color/base_color" />
+
+            <cn.qaii.viewutil_lib.navigation.NavigationView
                 android:id="@+id/id_indicator_shop"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:padding="8dp"
-                hyman:icon="@drawable/iv_actionbar_tab_service"
+                hyman:icon="@drawable/iv_actionbar_tab_shop"
                 hyman:text="商城"
                 hyman:text_size="12sp"
                 hyman:color="@color/base_color" />
-
-
 
             <cn.qaii.viewutil_lib.navigation.NavigationView
                 android:id="@+id/id_indicator_me"
@@ -57,7 +66,7 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:padding="8dp"
-                hyman:icon="@drawable/iv_actionbar_tab_more"
+                hyman:icon="@drawable/iv_actionbar_tab_me"
                 hyman:text="个人中心"
                 hyman:text_size="12sp"
                 hyman:color="@color/base_color" />

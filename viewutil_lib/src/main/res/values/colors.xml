@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="base_color">#3399ff</color>
-    <color name="base_color_deep">#0033ff</color>
-    <color name="actionbar_color">#3399ff</color>
+    <color name="base_color">#0072ff</color>
+    <color name="base_color_deep">#000099</color>
+    <color name="actionbar_color">#0072ff</color>
     <!-- 
     <color name="actionbar_color">#00cdff</color>
      -->

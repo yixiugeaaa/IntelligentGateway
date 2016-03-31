@@ -1,31 +1,38 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_add_device"
-    android:fitsSystemWindows="true" >
+    android:background="@color/white"
+    android:fitsSystemWindows="true">
 
-    <ImageView
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_above="@+id/btn_next_step"
-        android:layout_marginBottom="50dp"
-        android:src="@drawable/iv_add_device1"
-        android:scaleType="fitXY"
-        />
-    <Button
-        android:id="@+id/btn_next_step"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
-        android:background="@drawable/btn_green_selector"
-        android:text="下一步"
-        android:layout_marginBottom="50dp"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
 
-        />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/iv_switch_gateway"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="请按下网关设备左侧按钮，然后点击下一步"/>
+
+        <Button
+            android:id="@+id/btn_next_step"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/btn_blue_selector"
+            android:textSize="18dp"
+            android:textColor="@color/white"
+            android:text="下一步"
+
+            />
+    </LinearLayout>
 </RelativeLayout>

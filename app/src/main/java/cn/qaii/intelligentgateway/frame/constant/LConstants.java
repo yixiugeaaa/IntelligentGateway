@@ -1,8 +1,8 @@
 package cn.qaii.intelligentgateway.frame.constant;
 
-import java.io.File;
-
 import android.os.Environment;
+
+import java.io.File;
 
 public class LConstants {
 
@@ -54,5 +54,8 @@ public class LConstants {
 	public static final String BASE_KIND = "kind";
 	public static final String BASE_CYCLE = "cycle";
 	public static final String BASE_INDEX = "index";
+
+	public static final String GATEWAY_IP="192.168.1.1";
+	public static final int PORT=8000;
 
 }

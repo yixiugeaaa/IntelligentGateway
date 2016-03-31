@@ -1,15 +1,12 @@
 package cn.qaii.intelligentgateway.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import cn.qaii.intelligentgateway.R;
 import cn.qaii.intelligentgateway.base.BaseFragment;
-import cn.qaii.viewutil_lib.swipe.SwipeRefreshLayout;
 import cn.qaii.viewutil_lib.swipe.SwipeRefreshLayout.OnRefreshListener;
 
 /**
@@ -18,6 +15,8 @@ import cn.qaii.viewutil_lib.swipe.SwipeRefreshLayout.OnRefreshListener;
  * Created by xiuge on 2016/3/16 10:34.
  */
 public class MeFragment extends BaseFragment implements OnRefreshListener,View.OnClickListener{
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 

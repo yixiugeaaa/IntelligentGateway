@@ -4,7 +4,10 @@
     <style name="AppTheme" parent="parent_theme">
 
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
-        <item name="android:actionMenuTextAppearance">@style/MenuTextStyle</item>
+        <item
+            name="android:actionMenuTextAppearance">
+            @style/MenuTextStyle
+        </item>
     </style>
 
     <style name="SplashTheme" parent="parent_theme">
@@ -38,6 +41,12 @@
     <style name="style_divider_h">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0.2dp</item>
+        <item name="android:background">@color/lightgrey_line</item>
+    </style>
+
+    <style name="style_line_h">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
         <item name="android:background">@color/lightgrey_line</item>
     </style>
 

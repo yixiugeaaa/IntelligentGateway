@@ -1,25 +1,19 @@
 package cn.qaii.intelligentgateway;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 
 import com.actionbarsherlock.view.Window;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import cn.qaii.intelligentgateway.base.BaseSplashActivity;
-import cn.qaii.intelligentgateway.frame.constant.LContext;
-import cn.qaii.intelligentgateway.user.LoginActivity;
 
 /**
  * 启动页 SplashActivity
@@ -55,7 +49,7 @@ public class SplashActivity extends BaseSplashActivity {
 		imageView.setScaleType(ScaleType.FIT_XY);
 		// 异步加载图片
 		String url = "https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png";
-		mImageLoader.displayImage(url, imageView, new ImageLoadingListener() {
+		/*mImageLoader.displayImage(url, imageView, new ImageLoadingListener() {
 			
 			@Override
 			public void onLoadingStarted(String imageUri, View view) {
@@ -77,9 +71,10 @@ public class SplashActivity extends BaseSplashActivity {
 			@Override
 			public void onLoadingCancelled(String imageUri, View view) {
 			}
-		});
+		});*/
 		imageView.setScaleType(ScaleType.FIT_CENTER);
 		adLayout.addView(imageView);
+		start();
 	}
 
 	/**
@@ -93,11 +88,11 @@ public class SplashActivity extends BaseSplashActivity {
 
 			@Override
 			public void run() {
-				if(LContext.isLogin(mContext)){
+				//if(LContext.isLogin(mContext)){
 					startActivity(new Intent(mContext, MainActivity.class));
-				}else{
-					startActivity(new Intent(mContext, LoginActivity.class));
-				}
+				//}else{
+				//	startActivity(new Intent(mContext, LoginActivity.class));
+				//}
 				finish();
 			}
 		}, 1000);

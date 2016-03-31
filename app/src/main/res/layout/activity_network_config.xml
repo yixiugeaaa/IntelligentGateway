@@ -1,31 +1,84 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_add_device"
+    android:background="@color/white"
     android:fitsSystemWindows="true" >
 
-    <ImageView
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_above="@+id/btn_next_step"
-        android:layout_marginBottom="50dp"
-        android:src="@drawable/iv_add_device1"
-        android:scaleType="fitXY"
-        />
-    <Button
-        android:id="@+id/btn_next_step"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
-        android:background="@drawable/btn_green_selector"
-        android:text="下一步"
-        android:layout_marginBottom="50dp"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
 
-        />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="50dp"
+            android:src="@drawable/iv_chair" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:src="@drawable/ic_network_ssid"/>
+            <EditText
+                android:id="@+id/et_ssid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:background="@null"
+                android:text="GUEST-QAII"
+                android:hint="请输您家庭路由器的SSID"/>
+        </LinearLayout>
+
+        <View style="@style/style_line_h"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="2dp"
+                android:src="@drawable/ic_network_pwd"/>
+            <EditText
+                android:id="@+id/et_pwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:background="@null"
+                android:text="12345678"
+                android:hint="请输您家庭路由器的密码"/>
+        </LinearLayout>
+
+        <View style="@style/style_line_h"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"/>
+
+
+        <Button
+            android:id="@+id/btn_next_step"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="30dp"
+            android:background="@drawable/btn_blue_selector"
+            android:text="下一步"
+            android:textColor="@color/white"
+            android:textSize="18dp"/>
+    </LinearLayout>
 
 </RelativeLayout>
