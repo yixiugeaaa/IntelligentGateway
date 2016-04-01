@@ -12,4 +12,6 @@
     <string name="title_activity_search_gateway">SearchGatewayActivity</string>
     <string name="title_activity_network_config">NetworkConfigActivity</string>
 
+    <string name="scan_text">扫一扫设备上的二维码</string>
+
 </resources>

@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:background="@null"
-                android:text="GUEST-QAII"
+                android:text="QAII-GUEST"
                 android:hint="请输您家庭路由器的SSID"/>
         </LinearLayout>
 

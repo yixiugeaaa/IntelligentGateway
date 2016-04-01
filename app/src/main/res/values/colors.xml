@@ -89,4 +89,9 @@
     <color name="town_item_diveder">#C8C8C7</color>
     <color name="area_item_text_pressed_bg">#FF822E</color>
     <color name="list_gesture">#ff8cc64d</color>
+
+
+    <color name="result_view">#b0000000</color>
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="possible_result_points">#c0ffff00</color>
 </resources>

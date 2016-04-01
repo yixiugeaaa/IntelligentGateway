@@ -8,7 +8,6 @@
         android:layout_height="@dimen/abs__action_bar_default_height"
         layout="@layout/view_actionbar_sf" />
 
-    <View style="@style/style_divider_h" />
 
     <cn.qaii.viewutil_lib.swipe.SwipeRefreshLayout
         android:id="@+id/layout_swipe"
